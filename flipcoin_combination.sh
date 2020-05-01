@@ -1,30 +1,58 @@
-#! /bin/bash/ 
-declare -A count=( [heads]="0" [tails]="0" [h_h]="0" [h_t]="0" [t_h]="0" [t_t]="0" )
-declare -A percentage=( [heads]="0" [tails]="0" [h_h]="0" [h_t]="0" [t_h]="0" [t_t]="0" )
+#! /bin/bash/ -x
+declare -A count=( [heads]="0" [tails]="0" [h_h]="0" [h_t]="0" [t_h]="0" [t_t]="0" [h_h_h]="0" [h_h_t]="0" [h_t_h]="0" [h_t_t]="0" [t_h_h]="0" [t_h_t]="0" [t_t_h]="0"
+                   [t_t_t]="0" )
+declare -A percentage=( [heads]="0" [tails]="0" [h_h]="0" [h_t]="0" [t_h]="0" [t_t]="0" [h_h_h]="0" [h_h_t]="0" [h_t_h]="0" [h_t_t]="0" [t_h_h]="0" [t_h_t]="0" [t_t_h]="0"
+                   [t_t_t]="0" )
 
 total_count=0
 
-while [ $total_count -lt 50 ]
+while [ $total_count -lt 2 ]
 do
   total_count=$(( $total_count+1))
   random=$(( $RANDOM%2 ))
   random1=$(( $RANDOM%2 ))
+  random2=$(( $RANDOM%2 ))
   if [ $random -eq 1 ] 
   then
    count[heads]=$(( ${count[heads]}+1 ))
     if [ $random1 -eq 1 ]
     then
       count[h_h]=$(( ${count[h_h]}+1 ))
+         if [ $random2 -eq 1 ]
+         then
+           count[h_h_h]=$(( ${count[h_h_h]}+1 ))
+         else
+         count[h_h_t]=$(( ${count[h_h_t]}+1 ))
+         fi
     else
       count[h_t]=$(( ${count[h_t]}+1 ))
+        if [ $random2 -eq 1 ]
+         then
+           count[h_t_h]=$(( ${count[h_t_h]}+1 ))
+         else
+         count[h_t_t]=$(( ${count[h_t_t]}+1 ))
+         fi
     fi
   else
    count[tails]=$(( ${count[tails]}+1 ))
     if [ $random1 -eq 1 ]
     then
       count[t_h]=$(( ${count[t_h]}+1 ))
+        if [ $random2 -eq 1 ]
+         then
+           count[t_h_h]=$(( ${count[t_h_h]}+1 ))
+         else
+         count[t_h_t]=$(( ${count[t_h_t]}+1 ))
+         fi
     else 
        count[t_t]=$(( ${count[t_t]}+1 ))
+         if [ $random2 -eq 1 ]
+         then
+           count[t_t_h]=$(( ${count[t_t_h]}+1 ))
+         else
+         count[t_t_t]=$(( ${count[t_t_t]}+1 ))
+         fi
+
     fi
   fi
 done
@@ -35,6 +63,14 @@ percentage[h_h]=$(( 100*${count[h_h]}/$total_count ))
 percentage[h_t]=$(( 100*${count[h_t]}/$total_count ))
 percentage[t_h]=$(( 100*${count[t_h]}/$total_count ))
 percentage[t_t]=$(( 100*${count[t_t]}/$total_count ))
+percentage[h_h_h]=$(( 100*${count[h_h_h]}/$total_count ))
+percentage[h_h_t]=$(( 100*${count[h_h_t]}/$total_count ))
+percentage[h_t_h]=$(( 100*${count[h_t_h]}/$total_count ))
+percentage[h_t_t]=$(( 100*${count[h_t_t]}/$total_count ))
+percentage[t_h_h]=$(( 100*${count[t_h_h]}/$total_count ))
+percentage[t_h_t]=$(( 100*${count[t_h_t]}/$total_count ))
+percentage[t_t_h]=$(( 100*${count[t_t_h]}/$total_count ))
+percentage[t_t_t]=$(( 100*${count[t_t_t]}/$total_count ))
 
 echo "heads percentage in singlet combination is :"${percentage[heads]}
 echo "tails percentage is singlet combination is :"${percentage[tails]}
